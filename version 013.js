@@ -1525,7 +1525,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (transposedChordSets) {
 
 
-console.log('Transposed Chord Sets:\n' + JSON.stringify(transposedChordSets.complexChords, null, 0).replace(/],"/g, '],\n"')); // CHORDSETS FOR DEBUGGING
+// console.log('Transposed Chord Sets:\n' + JSON.stringify(transposedChordSets.complexChords, null, 0).replace(/],"/g, '],\n"')); // CHORDSETS FOR DEBUGGING
 // console.log('Simplified Chord Sets:\n' + JSON.stringify(transposedChordSets.simplifiedChords, null, 0).replace(/],"/g, '],\n"')); // CHORDSETS FOR DEBUGGING
 
 

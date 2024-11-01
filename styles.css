@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    flex-direction: flex;
+    align-items: center;
+
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between form rows */
+    width: 500px;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adds space between label and input */
+}
+
+#output-box {
+    width: 40%; /* Reduced from 60% to 40% to make it narrower */
+    /* height: 100px; Reduced from 200px to 150px to make it shorter */
+    border: 1px solid black;
+    overflow-y: scroll;
+    margin-top: 10px;
+    margin-bottom: 100px;
+    padding: 10px;
+    box-sizing: border-box; /* Ensures padding is included within the width and height */
+}
+

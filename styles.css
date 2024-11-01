@@ -32,7 +32,7 @@ body {
 }
 
 #output-box {
-    width: 100%; /* Use 100% width to fill the container */
+    width: 80%; /* Use 100% width to fill the container */
     max-width: 600px; /* Optional to limit size on larger screens */
     height: auto; /* Let the height adjust automatically */
 }

@@ -15,12 +15,15 @@ body {
 }
 
 .form-container {
+    width: 90%; /* Instead of 500px, use a relative width */
+    max-width: 500px; /* Optional max-width to keep it manageable on larger screens */
+    padding: 20px; /* Add padding for better spacing */
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    gap: 10px; /* Adds space between form rows */
-    width: 500px;
     align-items: center;
 }
+
 
 .form-row {
     display: flex;
@@ -29,13 +32,23 @@ body {
 }
 
 #output-box {
-    width: 40%; /* Reduced from 60% to 40% to make it narrower */
-    /* height: 100px; Reduced from 200px to 150px to make it shorter */
-    border: 1px solid black;
-    overflow-y: scroll;
-    margin-top: 10px;
-    margin-bottom: 100px;
-    padding: 10px;
-    box-sizing: border-box; /* Ensures padding is included within the width and height */
+    width: 100%; /* Use 100% width to fill the container */
+    max-width: 600px; /* Optional to limit size on larger screens */
+    height: auto; /* Let the height adjust automatically */
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column; /* Stack the label and input vertically on smaller screens */
+        align-items: flex-start;
+    }
+
+    input[type="text"] {
+        width: 100%; /* Make inputs take full width on small screens */
+    }
+
+    #output-box {
+        height: 300px; /* Adjust height for smaller devices */
+    }
 }
 

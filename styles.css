@@ -32,10 +32,18 @@ body {
 }
 
 #output-box {
-    width: 80%; /* Use 100% width to fill the container */
-    max-width: 600px; /* Optional to limit size on larger screens */
-    height: auto; /* Let the height adjust automatically */
+    width: 100%; /* Make it take up the full width of the container */
+    max-width: 100%; /* Prevents overflow on small screens */
+    height: auto; /* Allows the height to expand naturally */
+    min-height: 200px; /* Set a minimum height for usability */
+    border: 1px solid black;
+    overflow-y: auto; /* Keeps scrolling when content overflows vertically */
+    margin-top: 10px;
+    margin-bottom: 20px; /* Reduce bottom margin for better spacing on small screens */
+    padding: 10px;
+    box-sizing: border-box; /* Include padding and border in the width/height */
 }
+
 
 @media (max-width: 600px) {
     .form-row {
@@ -47,8 +55,12 @@ body {
         width: 100%; /* Make inputs take full width on small screens */
     }
 
-    #output-box {
-        height: 300px; /* Adjust height for smaller devices */
+    @media (max-width: 400px) {
+        #output-box {
+            min-height: 150px; /* Reduce minimum height for very small screens */
+            padding: 5px; /* Less padding to fit within smaller devices */
+        }
     }
+    
 }
 

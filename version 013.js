@@ -1450,7 +1450,7 @@ function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighb
                 if (entry.chord.includes(key) && entry.pad !== 1 && !printedChords.has(chordSignature)) {
                     printedChords.add(chordSignature);
                     // console.log(`{"set": ${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}", "numeral": "${entry.numeral}", "smartKey": "${entry.smartKey}"}\n`);
-                    console.log(`{"set": ${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}"}\n`);
+                    console.log(`{${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}"}\n`);
                 }
             });
         }
@@ -1465,7 +1465,7 @@ function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighb
                 if (entry.chord.includes(key) && entry.pad !== 1 && !printedChords.has(chordSignature)) {
                     printedChords.add(chordSignature);
                     // console.log(`{"set": ${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}", "numeral": "${entry.numeral}", "smartKey": "${entry.smartKey}"}\n`);
-                    console.log(`{"set": ${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}"}\n`);
+                    console.log(`{${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}"}\n`);
                 }
             });
         }

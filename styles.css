@@ -66,6 +66,7 @@ body {
 }
 
 
+
 @media (max-width: 600px) {
     .form-row {
         flex-direction: column; /* Stack the label and input vertically on smaller screens */

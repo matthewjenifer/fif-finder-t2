@@ -1,3 +1,14 @@
+let angle = 0;
+
+function spin() {
+  angle += 0.12; // Increase the angle (in degrees)
+document.getElementById('spinningImage').style.transform = `rotate(${angle}deg)`;
+  requestAnimationFrame(spin); // Recursively call the function to keep spinning
+}
+
+spin();
+
+
 let chordSets = {
     MAJ1: [{
             pad: 1,

@@ -1,12 +1,19 @@
-let angle = 0;
+function spinWheelOnce() {
+    let angle = 0;
+    const targetAngle = 360; // Full rotation
 
-function spin() {
-  angle += 0.12; // Increase the angle (in degrees)
-document.getElementById('spinningImage').style.transform = `rotate(${angle}deg)`;
-  requestAnimationFrame(spin); // Recursively call the function to keep spinning
+    function spin() {
+        angle += .12; // Adjust the speed of rotation
+        document.getElementById('spinningImage').style.transform = `rotate(${angle}deg)`;
+
+        if (angle < targetAngle) {
+            requestAnimationFrame(spin); // Continue spinning until the full rotation
+        }
+    }
+
+    spin(); // Start spinning
 }
 
-spin();
 
 
 let chordSets = {
@@ -1521,6 +1528,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Button click listener to process inputs
     submitButton.addEventListener('click', () => {
+        spinWheelOnce(); // Spin the wheel when the search button is pressed
         const rootInput = document.getElementById('root-note').value;
         const currentChordInput = document.getElementById('current-chord').value;
     

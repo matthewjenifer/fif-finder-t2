@@ -1,23 +1,23 @@
 
-# 🎹🔍 Finder
+# CO5 🎹🔍 Chord Finder
 
-A simple vanilla 🍦 JavaScript 💻 website 🌐 that I built over the last few 📅 days. This project showcases basic web 🌎 development skills, including HTML 📄, CSS 🎨, and JavaScript 💻, to create an interactive 🤹‍♂️ and responsive 📱💻 music 🎶 theory 📚 tool 🛠️.
+A simple vanilla JavaScript website that I built over the last few days. This project showcases basic web development skills, including HTML, CSS, and JavaScript, to create an interactive  and responsive music theory tool for users of Native Instruments Maschine Software.
 
 ## ✨ Features
 
-- Interactive 🤹‍♂️ elements powered by JavaScript 💻.
-- Responsive 📱💻 layout for both desktop 🖥️ and mobile 📱 devices.
-- Simple 😊 and clean ✨ design for ease of use.
+- Interactive  elements powered by JavaScript.
+- Responsive  layout for both desktop and mobile devices.
+- Simple and clean design for ease of use.
 
 ## ⚙️ Technologies Used
 
-- **HTML** 📄: Provides the website 🌐 structure 🏗️.
-- **CSS** 🎨: Handles styling 💅 and layout 🖼️.
-- **JavaScript** 💻: Adds interactivity 🤹‍♂️ and dynamic ⚡ features.
+- **HTML** 📄: Provides the website structure.
+- **CSS** 🎨: Handles styling and layout.
+- **JavaScript** 💻: Adds interactivity and dynamic features.
 
 ## 🚀 Getting Started
 
-To view 👀 the project locally 🏠:
+To view the project locally:
 
 1. Clone the repository 📂:
    ```sh
@@ -27,8 +27,8 @@ To view 👀 the project locally 🏠:
 
 ## 🌍 Deployment
 
-This project is deployed using [Vercel](https://vercel.com/) for easy public access 🔓.
+This project is deployed using [Vercel](https://vercel.com/) for easy public access.
 
 ## 📜 License
 
-This project is open source 🔓 and available under the [MIT License](📄).
+This project is open source and available under the [MIT License](📄).

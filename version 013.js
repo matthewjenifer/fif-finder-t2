@@ -1346,7 +1346,7 @@ function findChordMatch(complexChords, currentChord) {
     for (const [setName, chords] of Object.entries(complexChords)) {
         const chordIndex = chords.findIndex(entry => entry.chord === simplifiedChord);
         if (chordIndex !== -1) {
-            console.log(`Found in set: ${setName}, Pad: ${chords[chordIndex].pad}`);
+            // console.log(`Found in set: ${setName}, Pad: ${chords[chordIndex].pad}`);
             return;
         }
     }
@@ -1569,16 +1569,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Override console.log to also log messages to the output box, but with filtering
-    const originalConsoleLog = console.log;
-    console.log = function (...args) {
-        originalConsoleLog.apply(console, args);
+const originalConsoleLog = console.log;
+console.log = function (...args) {
+    originalConsoleLog.apply(console, args);
 
-        args.forEach(arg => {
-            // Filter out specific messages from being appended to the output box
-            const message = typeof arg === "object" ? JSON.stringify(arg) : arg;
-            if (typeof message === 'string' && !message.includes('Found in set') && !message.includes('Finding chord match')) {
-                appendOutput(message);
-            }
-        });
-    };
+    args.forEach(arg => {
+        let message = typeof arg === "object" ? JSON.stringify(arg) : arg;
+
+        // Make titles bold
+        message = message.replace(/^Relative Key:/, '<b>Relative Key:</b>');
+        message = message.replace(/^Neighboring Major Keys:/, '<b>Neighboring Major Keys:</b>');
+        message = message.replace(/^Neighboring Relative Minor Keys:/, '<b>Neighboring Relative Minor Keys:</b>');
+        message = message.replace(/^Relative Key chord matches:/, '<b>Relative Key chord matches:</b>');
+        message = message.replace(/^Neighboring chord matches:/, '<b>Neighboring chord matches:</b>');
+
+        // Make set name, pad number, and chord bold
+        message = message.replace(/(\w+), "pad": (\d+), "chord": "([^"]+)"/g, '<b>$1</b>, "pad": <b>$2</b>, "chord": "<b>$3</b>"');
+
+        // Create a paragraph element for the message
+        const outputParagraph = document.createElement('p');
+        outputParagraph.innerHTML = message;
+
+        // Add horizontal line separator if the message contains bolded titles
+        if (message.includes('<b>')) {
+            const hr = document.createElement('hr');
+            outputBox.appendChild(hr);
+        }
+
+        outputBox.appendChild(outputParagraph);
+        outputBox.scrollTop = outputBox.scrollHeight; // Auto-scroll to the bottom
+    });
+};
 });

@@ -1576,28 +1576,28 @@ console.log = function (...args) {
     args.forEach(arg => {
         let message = typeof arg === "object" ? JSON.stringify(arg) : arg;
 
-        // Make titles bold
+        
         message = message.replace(/^Relative Key:/, '<b>Relative Key:</b>');
         message = message.replace(/^Neighboring Major Keys:/, '<b>Neighboring Major Keys:</b>');
         message = message.replace(/^Neighboring Relative Minor Keys:/, '<b>Neighboring Relative Minor Keys:</b>');
         message = message.replace(/^Relative Key chord matches:/, '<b>Relative Key chord matches:</b>');
         message = message.replace(/^Neighboring chord matches:/, '<b>Neighboring chord matches:</b>');
 
-        // Make set name, pad number, and chord bold
+        
         message = message.replace(/(\w+), "pad": (\d+), "chord": "([^"]+)"/g, '<b>$1</b>, "pad": <b>$2</b>, "chord": "<b>$3</b>"');
 
-        // Create a paragraph element for the message
+        
         const outputParagraph = document.createElement('p');
         outputParagraph.innerHTML = message;
 
-        // Add horizontal line separator if the message contains bolded titles
+        
         if (message.includes('<b>')) {
             const hr = document.createElement('hr');
             outputBox.appendChild(hr);
         }
 
         outputBox.appendChild(outputParagraph);
-        outputBox.scrollTop = outputBox.scrollHeight; // Auto-scroll to the bottom
+        outputBox.scrollTop = outputBox.scrollHeight; 
     });
 };
 });

@@ -1,6 +1,6 @@
 ![Alt text](/images/MK3_frame1.png)
 
-# Fif 🎹 Finder 🔍
+# Fif' Chord 🎹 Finder 🔍
 
 A simple vanilla JavaScript website that I built over the last few days. This project showcases basic web development skills, including HTML, CSS, and JavaScript, to create an interactive  and responsive music theory tool for users of Native Instruments Maschine Software.
 

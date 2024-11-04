@@ -1,4 +1,4 @@
-![Alt text](/images/CO5_frame.png)
+![Alt text](/images/MK3_frame1.png)
 
 # CO5 🎹🔍 Chord Finder
 

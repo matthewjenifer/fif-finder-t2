@@ -1341,17 +1341,23 @@ function findChordMatch(complexChords, currentChord) {
         return;
     }
 
-    const simplifiedChord = simplifyChord(currentChord);
+    // Simplify the currentChord and make it lowercase
+    const simplifiedChord = simplifyChord(currentChord.trim()).toLowerCase();
 
     for (const [setName, chords] of Object.entries(complexChords)) {
-        const chordIndex = chords.findIndex(entry => entry.chord === simplifiedChord);
-        if (chordIndex !== -1) {
-            // console.log(`Found in set: ${setName}, Pad: ${chords[chordIndex].pad}`);
-            return;
+        for (const entry of chords) {
+            const entryChord = entry.chord.trim().toLowerCase(); // Simplify and standardize the chord name for comparison
+
+            if (entryChord === simplifiedChord) {
+                // console.log(`Found in set: ${setName}, Pad: ${entry.pad}`);
+                return;
+            }
         }
     }
+
     console.log('Chord not found in any set.');
 }
+
 
 
 function circleOfFifths(chordSet, currentChord) {
@@ -1360,49 +1366,81 @@ function circleOfFifths(chordSet, currentChord) {
         return null;
     }
 
-    const circle = [{
+    const circle = [
+        {
             major: 'C',
-            minor: 'Am'
-        }, {
+            minor: 'Am',
+            enharmonicMajor: 'B#',            
+            enharmonicMinor: null
+        },
+        {
             major: 'G',
-            minor: 'Em'
+            minor: 'Em',
+            enharmonicMajor: null,
+            enharmonicMinor: null
         },
         {
             major: 'D',
-            minor: 'Bm'
-        }, {
+            minor: 'Bm',
+            enharmonicMajor: null,
+            enharmonicMinor: null
+        },
+        {
             major: 'A',
-            minor: 'F#m'
+            minor: 'F#m',
+            enharmonicMajor: null,
+            enharmonicMinor: 'G#m' 
         },
         {
             major: 'E',
-            minor: 'C#m'
-        }, {
+            minor: 'C#m',
+            enharmonicMajor: null,
+            enharmonicMinor: 'Dbm' 
+        },
+        {
             major: 'B',
-            minor: 'G#m'
+            minor: 'G#m',
+            enharmonicMajor: 'Cb',            
+            enharmonicMinor: 'Abm' 
         },
         {
             major: 'F#',
-            minor: 'D#m'
-        }, {
+            minor: 'D#m',
+            enharmonicMajor: 'Gb',             
+            enharmonicMinor: 'Ebm' 
+        },
+        {
             major: 'Db',
-            minor: 'Bbm'
+            minor: 'Bbm',
+            enharmonicMajor: 'C#',             
+            enharmonicMinor: 'A#m'
         },
         {
             major: 'Ab',
-            minor: 'Fm'
-        }, {
+            minor: 'Fm',
+            enharmonicMajor: 'G#',             
+            enharmonicMinor: null
+        },
+        {
             major: 'Eb',
-            minor: 'Cm'
+            minor: 'Cm',
+            enharmonicMajor: 'D#',             
+            enharmonicMinor: null
         },
         {
             major: 'Bb',
-            minor: 'Gm'
-        }, {
+            minor: 'Gm',
+            enharmonicMajor: 'A#',             
+            enharmonicMinor: null
+        },
+        {
             major: 'F',
-            minor: 'Dm'
+            minor: 'Dm',
+            enharmonicMajor: 'E#',            
+            enharmonicMinor: null
         }
     ];
+    
 
     const isMinor = currentChord.toLowerCase().includes('mi');
     const simplifiedRoot = currentChord.includes('mi') ? currentChord.replace('mi', 'm') : currentChord;
@@ -1410,26 +1448,30 @@ function circleOfFifths(chordSet, currentChord) {
 
 
     let currentKey = null;
-    let chordType = '';
-    for (let i = 0; i < circle.length; i++) {
-        // console.log('Checking against circle key:', circle[i]);
-        if (circle[i].major === simplifiedRoot) {
-            currentKey = circle[i];
-            chordType = 'major';
-            // console.log('Found Major Match:', currentKey);
-            break;
-        } else if (circle[i].minor === simplifiedRoot) {
-            currentKey = circle[i];
-            chordType = 'minor';
-            // console.log('Found Minor Match:', currentKey);
-            break;
-        }
-    }
+let chordType = '';
 
-    if (!currentKey) {
-        console.log('Chord not found in the circle of fifths.');
-        return null;
+// Loop through the circle to find a match
+for (let i = 0; i < circle.length; i++) {
+    // console.log(`Checking against circle key: Major - ${circle[i].major}, Minor - ${circle[i].minor}, Enharmonic Major - ${circle[i].enharmonicMajor}, Enharmonic Minor - ${circle[i].enharmonicMinor}`);
+
+    if (circle[i].major === simplifiedRoot || circle[i].enharmonicMajor === simplifiedRoot) {
+        currentKey = circle[i];
+        chordType = 'major';
+        // console.log('Found Major Match:', currentKey);
+        break;
+    } else if (circle[i].minor === simplifiedRoot || circle[i].enharmonicMinor === simplifiedRoot) {
+        currentKey = circle[i];
+        chordType = 'minor';
+        // console.log('Found Minor Match:', currentKey);
+        break;
     }
+}
+
+if (!currentKey) {
+    console.log('Chord not found in the circle of fifths.');
+    return null;
+}
+
 
     const relativeKey = chordType === 'major' ? currentKey.minor : currentKey.major;
     const currentIndex = circle.findIndex(key => key.major === currentKey.major);
@@ -1450,6 +1492,9 @@ function circleOfFifths(chordSet, currentChord) {
         neighboringRelativeMinorKeys
     };
 }
+
+
+
 
 function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighboringRelativeMinorKeys) {
     if (!neighboringMajorKeys || !neighboringRelativeMinorKeys) {

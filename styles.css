@@ -4,6 +4,7 @@
     justify-content: center;
     flex-direction: row;
     align-items: center;
+    color: white; /* Sets text color to white globally */
 }
 
 #container {
@@ -33,6 +34,8 @@ body {
     justify-content: center;
     flex-direction: flex;
     align-items: center;
+    background-color: black;
+    color: white;
 
 }
 
@@ -54,6 +57,7 @@ body {
 }
 
 #output-box {
+    color: black; /* Text in output box remains black */
     width: 100%;
     max-width: 100%;
     height: auto;
@@ -66,7 +70,20 @@ body {
     box-sizing: border-box;
 }
 
+input[type="text"], button {
+    background-color: #333; /* Dark grey background for better visibility */
+    color: white; /* White text for input and buttons */
+    border: 1px solid #777; /* Border to make input fields stand out */
+}
 
+button {
+    background-color: #444; /* Darker button background */
+    cursor: pointer; /* Change cursor on hover for better UX */
+}
+
+button:hover {
+    background-color: #555; /* Slightly lighter on hover for better interactivity */
+}
 
 @media (max-width: 600px) {
     .form-row {

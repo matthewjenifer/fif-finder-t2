@@ -4,7 +4,6 @@
     justify-content: center;
     flex-direction: row;
     align-items: center;
-    color: white; /* Sets text color to white globally */
 }
 
 #container {
@@ -57,18 +56,20 @@ body {
 }
 
 #output-box {
+    background-color: white; /* Keep the output box with a white background */
     color: black; /* Text in output box remains black */
     width: 100%;
     max-width: 100%;
     height: auto;
     min-height: 200px;
-    border: 1px solid black;
+    border: 1px solid white; /* White border for better visibility */
     overflow-y: auto;
     margin-top: 10px;
     margin-bottom: 20px;
     padding: 10px;
     box-sizing: border-box;
 }
+
 
 input[type="text"], button {
     background-color: #333; /* Dark grey background for better visibility */

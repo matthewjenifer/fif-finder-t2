@@ -15,7 +15,6 @@ function spinWheelOnce() {
 }
 
 
-
 let chordSets = {
     MAJ1: [{
             pad: 1,
@@ -1358,8 +1357,6 @@ function findChordMatch(complexChords, currentChord) {
     console.log('Chord not found in any set.');
 }
 
-
-
 function circleOfFifths(chordSet, currentChord) {
     if (!currentChord) {
         console.log('No chord provided.');
@@ -1493,8 +1490,53 @@ if (!currentKey) {
     };
 }
 
+function getChordComplexityRank(chord) {
+    const complexityRank = [
+        'maj', 'min', 'mi', 'dim', 'sus2', 'sus4',  // Simple triads and suspensions
+        '6', 'add9',                                // First extensions
+        '7', 'mi7', 'ma7',                          // Seventh chords
+        '9', 'mi9', 'ma9',                          // Ninth chords
+        '11', 'mi11',                               // Eleventh chords
+        '13', 'ma7add13',                           // Thirteenth chords and major seventh added thirteenth
+        '#9', 'b9', 'b13', '#11',                   // Alterations
+        'dim7', '7#9', '7b9', '7b13', '7#11'        // Altered dominant and diminished sevenths
+    ];
 
+    let rank = 0;
+    complexityRank.forEach((suffix, index) => {
+        if (chord.includes(suffix)) {
+            rank = index + 1;
+        }
+    });
 
+    return rank;
+}
+
+function getChordRoot(chord) {
+    // Extract the root from the chord (e.g., "D" from "Dmi7").
+    const match = chord.match(/^[A-G][b#]?/);
+    return match ? match[0] : chord;
+}
+
+function groupAndSortChords(chords) {
+    // Group chords by their root triad.
+    const groups = chords.reduce((acc, chord) => {
+        const root = getChordRoot(chord.chord);
+        if (!acc[root]) {
+            acc[root] = [];
+        }
+        acc[root].push(chord);
+        return acc;
+    }, {});
+
+    // Sort each group by complexity.
+    for (const root in groups) {
+        groups[root].sort((a, b) => a.rank - b.rank);
+    }
+
+    // Flatten the sorted groups into a single array.
+    return Object.values(groups).flat();
+}
 
 function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighboringRelativeMinorKeys) {
     if (!neighboringMajorKeys || !neighboringRelativeMinorKeys) {
@@ -1503,39 +1545,60 @@ function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighb
     }
 
     const printedChords = new Set();
+    const relativeKeyMatches = [];
+    const neighboringKeyMatches = [];
 
     // Find matches in Relative Key
-    console.log("\nRelative Key chord matches:\n");
     neighboringRelativeMinorKeys.forEach(key => {
         for (const [setName, chords] of Object.entries(complexChords)) {
             chords.forEach(entry => {
                 const chordSignature = `${entry.chord}-${entry.numeral}`;
                 if (entry.chord.includes(key) && entry.pad !== 1 && !printedChords.has(chordSignature)) {
                     printedChords.add(chordSignature);
-                    // console.log(`{"set": ${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}", "numeral": "${entry.numeral}", "smartKey": "${entry.smartKey}"}\n`);
-                    console.log(`${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}"\n`);
+                    relativeKeyMatches.push({
+                        set: setName,
+                        pad: entry.pad,
+                        chord: entry.chord,
+                        rank: getChordComplexityRank(entry.chord)
+                    });
                 }
             });
         }
     });
 
     // Find matches in Neighboring Major Keys
-    console.log("\nNeighboring chord matches:\n");
     neighboringMajorKeys.forEach(key => {
         for (const [setName, chords] of Object.entries(complexChords)) {
             chords.forEach(entry => {
                 const chordSignature = `${entry.chord}-${entry.numeral}`;
                 if (entry.chord.includes(key) && entry.pad !== 1 && !printedChords.has(chordSignature)) {
                     printedChords.add(chordSignature);
-                    // console.log(`{"set": ${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}", "numeral": "${entry.numeral}", "smartKey": "${entry.smartKey}"}\n`);
-                    console.log(`${setName}, "pad": ${entry.pad}, "chord": "${entry.chord}"\n`);
+                    neighboringKeyMatches.push({
+                        set: setName,
+                        pad: entry.pad,
+                        chord: entry.chord,
+                        rank: getChordComplexityRank(entry.chord)
+                    });
                 }
             });
         }
     });
+
+    // Group by root triad and sort by complexity within each group
+    const sortedRelativeKeyMatches = groupAndSortChords(relativeKeyMatches);
+    const sortedNeighboringKeyMatches = groupAndSortChords(neighboringKeyMatches);
+
+    // Print the sorted matches
+    console.log("\nRelative Key chord matches:\n");
+    sortedRelativeKeyMatches.forEach(match => {
+        console.log(`${match.set}, "pad": ${match.pad}, "chord": "${match.chord}"`);
+    });
+
+    console.log("\nNeighboring chord matches:\n");
+    sortedNeighboringKeyMatches.forEach(match => {
+        console.log(`${match.set}, "pad": ${match.pad}, "chord": "${match.chord}"`);
+    });
 }
-
-
 
 
 

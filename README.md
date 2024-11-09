@@ -2,7 +2,7 @@
 
 # Fif' Chord 🎹 Finder 🔍
 
-A simple vanilla JavaScript website that I built over the last few days. This project showcases basic web development skills, including HTML, CSS, and JavaScript, to create an interactive  and responsive music theory tool for users of Native Instruments Maschine Software.
+A simple vanilla JavaScript website that I built over the last few days. This project showcases basic web development skills, including HTML, CSS, and JavaScript, to create an interactive  and responsive music theory tool for users of [Native Instruments Maschine](https://www.native-instruments.com/en/products/maschine/production-systems/maschine/) Software.
 
 ## ✨ Features
 

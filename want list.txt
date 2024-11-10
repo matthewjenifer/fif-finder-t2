@@ -1,0 +1,6 @@
+- click chord to submit new chord for search
+- hover over chord to see visual of pad location(?)
+
+
+- sound of chord 
+- chord prograssion compile preview

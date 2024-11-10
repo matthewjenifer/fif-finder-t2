@@ -4,6 +4,8 @@
 
 A simple vanilla JavaScript website that I built over the last few days. This project showcases basic web development skills, including HTML, CSS, and JavaScript, to create an interactive  and responsive music theory tool for users of [Native Instruments Maschine](https://www.native-instruments.com/en/products/maschine/production-systems/maschine/) Software.
 
+[Read this blog](https://matthewjenifer.github.io/music%20theory/web%20development/2024/11/09/my-third-post.html) for insight on how it was built.
+
 ## ✨ Features
 
 - Interactive  elements powered by JavaScript.

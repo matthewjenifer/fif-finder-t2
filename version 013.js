@@ -1353,13 +1353,16 @@ function createChordCheckbox(setName, padNumber, chordName) {
 
     const label = document.createElement('label'); // Create a label element for the checkbox
     label.htmlFor = `chordCheckbox${padNumber}`; // Set the label 'for' attribute to match the checkbox ID
-    label.innerHTML = `<b>${setName}</b>, "pad": <b>${padNumber}</b>, "chord": "<b>${chordName}</b>"`; // Format the label correctly
+    label.innerHTML = `&nbsp;&nbsp;<b>${setName}</b>, "pad": <b>${padNumber}</b>, "chord": "<b>${chordName}</b>"`; // Add space before the set name
 
     const container = document.createElement('div'); // Create a container div to hold the checkbox and label
-    container.appendChild(document.createElement('br')); // Add a line break before the checkbox
-    container.appendChild(checkbox); // Append the checkbox to the container
-    container.appendChild(label); // Append the label to the container
-    container.appendChild(document.createElement('br')); // Add a line break after the label
+    container.appendChild(document.createElement('br')); // Add a line break before the elements
+    container.appendChild(checkbox); // Append the checkbox to the container first
+    container.appendChild(label); // Append the label to the container after the checkbox
+    container.appendChild(document.createElement('br')); // Add a line break after the elements
+
+    const hr = document.createElement('hr'); // Create an hr element for separation
+    container.appendChild(hr); // Append the hr to the container
 
     // Add an event listener to update the "current chord" input field when the checkbox is selected
     checkbox.addEventListener('change', () => {
@@ -1370,6 +1373,10 @@ function createChordCheckbox(setName, padNumber, chordName) {
 
     outputBox.appendChild(container); // Append the container to the output box
 }
+
+
+
+
 
 
 

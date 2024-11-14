@@ -1364,6 +1364,13 @@ function createChordCheckbox(setName, padNumber, chordName) {
     container.appendChild(label); // Append the label to the container
     container.appendChild(document.createElement('br')); // Add a line break after the label
 
+    // Add an event listener to update the "current chord" input field when the checkbox is selected
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            document.getElementById('current-chord').value = chordName; // Update the "current chord" input field with the selected chord name
+        }
+    });
+
     outputBox.appendChild(container); // Append the container to the output box
 }
 

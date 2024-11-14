@@ -1268,23 +1268,23 @@ const specificSuffixes = [
 
 
 function simplifyChord(chord) {
-    const rootMatch = chord.match(/^[A-G][b#]?/);
+    const rootMatch = chord.match(/^[A-Ga-g][b#]?/); // Allow both uppercase and lowercase roots
     if (!rootMatch) return chord;
 
     const root = rootMatch[0];
-    const isMinor = chord.includes('mi') && !chord.includes('maj');
+    const isMinor = chord.toLowerCase().includes('mi') && !chord.toLowerCase().includes('maj');
 
     specificSuffixes.forEach(suffix => {
         const regex = new RegExp(suffix + '(?!\\w)', 'gi');
         chord = chord.replace(regex, '');
     });
-    
 
-    chord = chord.replace(/\/[A-G][b#]?/g, '');
-    const finalRoot = enharmonicMap[root] || root;
+    chord = chord.replace(/\/[A-Ga-g][b#]?/g, '');
+    const finalRoot = enharmonicMap[root.toUpperCase()] || root;
 
     return isMinor ? `${finalRoot}mi` : finalRoot.trim();
 }
+
 
 function simplifyChordSet(chordSet) {
     for (let key in chordSet) {
@@ -1412,7 +1412,7 @@ function findChordMatch(complexChords, currentChord) {
         return;
     }
 
-    // Simplify the currentChord and make it lowercase
+    // Simplify the currentChord and make it lowercase for comparison
     const simplifiedChord = simplifyChord(currentChord.trim()).toLowerCase();
 
     for (const [setName, chords] of Object.entries(complexChords)) {
@@ -1428,6 +1428,7 @@ function findChordMatch(complexChords, currentChord) {
 
     console.log('Chord not found in any set.');
 }
+
 
 function circleOfFifths(chordSet, currentChord) {
     if (!currentChord) {

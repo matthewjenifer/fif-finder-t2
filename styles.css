@@ -6,6 +6,35 @@
     align-items: center;
 }
 
+/* Checkbox visibility */
+.chord-checkbox {
+    margin-right: 10px; /* Adds spacing between checkbox and label */
+    display: inline-block; /* Ensure checkbox is inline and visible */
+    position: relative; /* Ensure it's positioned correctly */
+    z-index: 1; /* Make sure it's not covered by other elements */
+}
+
+
+.chord-label {
+    font-family: Arial, sans-serif;
+    font-size: 16px; /* Increase the font size for better readability */
+    color: black; /* Ensure label text is black on the white background */
+    margin-bottom: 5px; /* Adds some space at the bottom */
+    display: inline-block; /* Ensure the label is inline and properly aligned */
+}
+
+.output-entry {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+
+.output-message {
+    margin-bottom: 10px; /* Spacing for regular messages */
+}
+
 #container {
     position: relative;
     width: 300px;
@@ -26,28 +55,24 @@
     z-index: 1;
 }
 
-
-
 body {
     display: flex;
     justify-content: center;
-    flex-direction: flex;
+    flex-direction: column; /* Corrected value */
     align-items: center;
     background-color: black;
     color: white;
-
 }
 
 .form-container {
-    width: 90%;
-    max-width: 500px;
+    width: 100%;
+    max-width: 600px; /* Increased the max width for better layout on larger screens */
     padding: 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
-
 
 .form-row {
     display: flex;
@@ -56,19 +81,19 @@ body {
 }
 
 #output-box {
-    background-color: white; /* Keep the output box with a white background */
-    color: black; /* Text in output box remains black */
+    background-color: white; /* Ensure a consistent background for contrast */
+    color: black; /* Black text for better readability */
+    border: 1px solid black;
     width: 100%;
-    max-width: 100%;
-    height: auto;
-    min-height: 200px;
-    border: 1px solid white; /* White border for better visibility */
-    overflow-y: auto;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    max-width: 600px;
+    height: 600px;
+    overflow-y: auto; /* Enable scrolling if needed */
     padding: 10px;
     box-sizing: border-box;
+    position: relative; /* Ensure positioning is properly set */
+    z-index: 2; /* Place it above other lower elements */
 }
+
 
 
 input[type="text"], button {
@@ -94,14 +119,12 @@ button:hover {
 
     input[type="text"] {
         width: 100%;
-
-        @media (max-width: 400px) {
-            #output-box {
-                min-height: 150px;
-                padding: 5px;
-            }
-        }
-
     }
 
+    @media (max-width: 400px) {
+        #output-box {
+            min-height: 150px;
+            padding: 5px;
+        }
+    }
 }

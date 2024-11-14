@@ -1,3 +1,16 @@
+// Move appendOutput to the global scope
+// Updated appendOutput function to only handle simple messages
+const appendOutput = (message) => {
+    const outputParagraph = document.createElement('p');
+    outputParagraph.textContent = message;
+    outputBox.appendChild(outputParagraph);
+    outputBox.scrollTop = outputBox.scrollHeight; // Auto-scroll to the bottom
+};
+
+
+// Move this to the global scope for reuse across functions
+const outputBox = document.getElementById('output-box');
+
 function spinWheelOnce() {
     let angle = 0;
     const targetAngle = 360; // Full rotation
@@ -1236,6 +1249,7 @@ const specificSuffixes = [
     '9', '9#5', '11', 'b13', 'addb13', 'aug'
 ];
 
+
 function simplifyChord(chord) {
     const rootMatch = chord.match(/^[A-G][b#]?/);
     if (!rootMatch) return chord;
@@ -1333,6 +1347,28 @@ function transposeChordSets(chordSets, root) {
         simplifiedChords
     };
 }
+
+function createChordCheckbox(setName, padNumber, chordName) {
+    const checkbox = document.createElement('input'); // Create a checkbox element
+    checkbox.type = 'checkbox'; // Set type to checkbox
+    checkbox.id = `chordCheckbox${padNumber}`; // Set a unique ID for the checkbox
+    checkbox.value = chordName; // Set the value of the checkbox to the chord name
+
+    const label = document.createElement('label'); // Create a label element for the checkbox
+    label.htmlFor = `chordCheckbox${padNumber}`; // Set the label 'for' attribute to match the checkbox ID
+    label.innerHTML = `<b>${setName}</b>, "pad": <b>${padNumber}</b>, "chord": "<b>${chordName}</b>"`; // Format the label correctly
+
+    const container = document.createElement('div'); // Create a container div to hold the checkbox and label
+    container.appendChild(document.createElement('br')); // Add a line break before the checkbox
+    container.appendChild(checkbox); // Append the checkbox to the container
+    container.appendChild(label); // Append the label to the container
+    container.appendChild(document.createElement('br')); // Add a line break after the label
+
+    outputBox.appendChild(container); // Append the container to the output box
+}
+
+
+
 
 function findChordMatch(complexChords, currentChord) {
     if (!currentChord) {
@@ -1538,6 +1574,7 @@ function groupAndSortChords(chords) {
     return Object.values(groups).flat();
 }
 
+// Update findNeighboringChordMatches to use createChordCheckbox for matches
 function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighboringRelativeMinorKeys) {
     if (!neighboringMajorKeys || !neighboringRelativeMinorKeys) {
         console.log('No neighboring keys provided.');
@@ -1588,17 +1625,19 @@ function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighb
     const sortedRelativeKeyMatches = groupAndSortChords(relativeKeyMatches);
     const sortedNeighboringKeyMatches = groupAndSortChords(neighboringKeyMatches);
 
-    // Print the sorted matches
-    console.log("\nRelative Key chord matches:\n");
-    sortedRelativeKeyMatches.forEach(match => {
-        console.log(`${match.set}, "pad": ${match.pad}, "chord": "${match.chord}"`);
-    });
+    // Print the sorted matches using createChordCheckbox for checkboxes
+    appendOutput("\nRelative Key chord matches:\n");
+sortedRelativeKeyMatches.forEach(match => {
+    createChordCheckbox(match.set, match.pad, match.chord);
+});
 
-    console.log("\nNeighboring chord matches:\n");
-    sortedNeighboringKeyMatches.forEach(match => {
-        console.log(`${match.set}, "pad": ${match.pad}, "chord": "${match.chord}"`);
-    });
+appendOutput("\nNeighboring chord matches:\n");
+sortedNeighboringKeyMatches.forEach(match => {
+    createChordCheckbox(match.set, match.pad, match.chord);
+});
+    
 }
+
 
 
 
@@ -1606,33 +1645,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Select the existing submit button and output box from HTML
     const submitButton = document.getElementById('submit-button');
     const outputBox = document.getElementById('output-box');
-
-    // Function to append output to the output box
-    const appendOutput = (message) => {
-        const outputParagraph = document.createElement('p');
-        
-        // Use a regex to identify if the message has the expected pattern
-        if (typeof message === "string" && message.includes('"set":') && message.includes('"pad":') && message.includes('"chord":')) {
-            message = message.replace(/"set":\s*([^,]+)/, '"set": <b>$1</b>')
-                            .replace(/"pad":\s*([^,]+)/, '"pad": <b>$1</b>')
-                            .replace(/"chord":\s*([^,]+)/, '"chord": <b>$1</b>');
-            outputParagraph.innerHTML = message;
-
-            // Add horizontal line separator
-            const hr = document.createElement('hr');
-            outputBox.appendChild(hr);
-
-        } else {
-            // If it is a regular message or object
-            outputParagraph.textContent = message;
-        }
-    
-        outputBox.appendChild(outputParagraph);
-        outputBox.scrollTop = outputBox.scrollHeight; // Auto-scroll to the bottom
-    };
-    
-    
-    
 
     // Button click listener to process inputs
     submitButton.addEventListener('click', () => {
@@ -1649,7 +1661,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
         const transposedChordSets = transposeChordSets(chordSets, rootInput);
-        if (transposedChordSets) {
+    if (transposedChordSets) {
 
 
 // console.log('Transposed Chord Sets:\n' + JSON.stringify(transposedChordSets.complexChords, null, 0).replace(/],"/g, '],\n"')); // CHORDSETS FOR DEBUGGING
@@ -1657,24 +1669,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-            if (!currentChordInput) {
-                appendOutput('No chord provided');
-                return;
-            }
+if (!currentChordInput) {
+    appendOutput('No chord provided');
+    return;
+}
 
-            // Finding the chord and printing to console only
-            findChordMatch(transposedChordSets.complexChords, currentChordInput);
+// Finding the chord and printing to console only
+findChordMatch(transposedChordSets.complexChords, currentChordInput);
 
-            // Find neighboring chords based on circle of fifths
-            const simplifiedChord = simplifyChord(currentChordInput);
-            const neighboringKeysData = circleOfFifths(transposedChordSets.complexChords, simplifiedChord);
+// Find neighboring chords based on circle of fifths
+const simplifiedChord = simplifyChord(currentChordInput);
+const neighboringKeysData = circleOfFifths(transposedChordSets.complexChords, simplifiedChord);
 
-            if (neighboringKeysData) {
-                const { neighboringMajorKeys, neighboringRelativeMinorKeys } = neighboringKeysData;
-                findNeighboringChordMatches(transposedChordSets.complexChords, neighboringMajorKeys, neighboringRelativeMinorKeys);
-            }
-        }
-    });
+// Ensure neighboringKeysData is valid before proceeding
+if (neighboringKeysData) {
+    const { neighboringMajorKeys, neighboringRelativeMinorKeys } = neighboringKeysData;
+
+    // Check if neighboring keys are available before finding matches
+    if (neighboringMajorKeys.length > 0 || neighboringRelativeMinorKeys.length > 0) {
+        findNeighboringChordMatches(
+            transposedChordSets.complexChords,
+            neighboringMajorKeys,
+            neighboringRelativeMinorKeys
+        );
+    } else {
+        appendOutput('No neighboring keys found.');
+    }
+} else {
+    appendOutput('No neighboring keys data available.');
+}
+}
+});
 
     // Override console.log to also log messages to the output box, but with filtering
 const originalConsoleLog = console.log;

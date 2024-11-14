@@ -1,5 +1,3 @@
-// Move appendOutput to the global scope
-// Updated appendOutput function to only handle simple messages
 const appendOutput = (message) => {
     const outputParagraph = document.createElement('p');
     outputParagraph.textContent = message;
@@ -8,7 +6,6 @@ const appendOutput = (message) => {
 };
 
 
-// Move this to the global scope for reuse across functions
 const outputBox = document.getElementById('output-box');
 
 function spinWheelOnce() {

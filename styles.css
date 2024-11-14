@@ -11,7 +11,7 @@
     margin-right: 10px; /* Adds spacing between checkbox and label */
     display: inline-block; /* Ensure checkbox is inline and visible */
     position: relative; /* Ensure it's positioned correctly */
-    z-index: 1; /* Make sure it's not covered by other elements */
+    z-index: 3; /* Make sure it's not covered by other elements */
 }
 
 
@@ -117,14 +117,20 @@ button:hover {
         align-items: flex-start;
     }
 
-    input[type="text"] {
+    input[type="text"], button {
         width: 100%;
     }
 
-    @media (max-width: 400px) {
-        #output-box {
-            min-height: 150px;
-            padding: 5px;
-        }
+    #output-box {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
+    .chord-checkbox {
+        margin-bottom: 10px; /* Adding margin for better spacing on mobile */
     }
 }
+

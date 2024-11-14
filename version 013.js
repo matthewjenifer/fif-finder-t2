@@ -5,7 +5,6 @@ const appendOutput = (message) => {
     outputBox.scrollTop = outputBox.scrollHeight; // Auto-scroll to the bottom
 };
 
-
 const outputBox = document.getElementById('output-box');
 
 function spinWheelOnce() {
@@ -1346,25 +1345,25 @@ function transposeChordSets(chordSets, root) {
 }
 
 function createChordCheckbox(setName, padNumber, chordName) {
-    const checkbox = document.createElement('input'); // Create a checkbox element
-    checkbox.type = 'checkbox'; // Set type to checkbox
-    checkbox.id = `chordCheckbox${padNumber}`; // Set a unique ID for the checkbox
-    checkbox.value = chordName; // Set the value of the checkbox to the chord name
+    const checkbox = document.createElement('input'); 
+    checkbox.type = 'checkbox';
+    checkbox.id = `chordCheckbox${padNumber}`; 
+    checkbox.value = chordName; 
 
-    const label = document.createElement('label'); // Create a label element for the checkbox
-    label.htmlFor = `chordCheckbox${padNumber}`; // Set the label 'for' attribute to match the checkbox ID
+    const label = document.createElement('label'); 
+    label.htmlFor = `chordCheckbox${padNumber}`; 
     label.innerHTML = `&nbsp;&nbsp;<b>${setName}</b>, "pad": <b>${padNumber}</b>, "chord": "<b>${chordName}</b>"`; // Add space before the set name
 
-    const container = document.createElement('div'); // Create a container div to hold the checkbox and label
-    container.appendChild(document.createElement('br')); // Add a line break before the elements
-    container.appendChild(checkbox); // Append the checkbox to the container first
-    container.appendChild(label); // Append the label to the container after the checkbox
-    container.appendChild(document.createElement('br')); // Add a line break after the elements
+    const container = document.createElement('div'); 
+    container.appendChild(document.createElement('br')); 
+    container.appendChild(checkbox); 
+    container.appendChild(label); 
+    container.appendChild(document.createElement('br')); 
 
-    const hr = document.createElement('hr'); // Create an hr element for separation
-    container.appendChild(hr); // Append the hr to the container
+    const hr = document.createElement('hr'); 
+    container.appendChild(hr); 
 
-    // Add an event listener to update the "current chord" input field and ensure only one checkbox is checked
+    
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
             // Uncheck all other checkboxes
@@ -1375,22 +1374,15 @@ function createChordCheckbox(setName, padNumber, chordName) {
                 }
             });
 
-            // Update the "current chord" input field with the selected chord name
+            
             document.getElementById('current-chord').value = chordName;
         } else {
-            document.getElementById('current-chord').value = ''; // Clear the "current chord" input field if unchecked
+            document.getElementById('current-chord').value = ''; 
         }
     });
 
-    outputBox.appendChild(container); // Append the container to the output box
+    outputBox.appendChild(container); 
 }
-
-
-
-
-
-
-
 
 
 function findChordMatch(complexChords, currentChord) {
@@ -1661,9 +1653,6 @@ sortedNeighboringKeyMatches.forEach(match => {
     
 }
 
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     // Select the existing submit button and output box from HTML
     const submitButton = document.getElementById('submit-button');
@@ -1689,7 +1678,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // console.log('Transposed Chord Sets:\n' + JSON.stringify(transposedChordSets.complexChords, null, 0).replace(/],"/g, '],\n"')); // CHORDSETS FOR DEBUGGING
 // console.log('Simplified Chord Sets:\n' + JSON.stringify(transposedChordSets.simplifiedChords, null, 0).replace(/],"/g, '],\n"')); // CHORDSETS FOR DEBUGGING
-
 
 
 if (!currentChordInput) {

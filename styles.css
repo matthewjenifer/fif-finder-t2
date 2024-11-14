@@ -35,6 +35,26 @@
     margin-bottom: 10px; /* Spacing for regular messages */
 }
 
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #007BFF; /* Customize your button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none; /* Initially hidden */
+}
+
+#scrollToTopBtn:hover {
+    background-color: #0056b3; /* Darken button on hover */
+}
+
+
 #container {
     position: relative;
     width: 300px;

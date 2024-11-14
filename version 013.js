@@ -1364,15 +1364,27 @@ function createChordCheckbox(setName, padNumber, chordName) {
     const hr = document.createElement('hr'); // Create an hr element for separation
     container.appendChild(hr); // Append the hr to the container
 
-    // Add an event listener to update the "current chord" input field when the checkbox is selected
+    // Add an event listener to update the "current chord" input field and ensure only one checkbox is checked
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
-            document.getElementById('current-chord').value = chordName; // Update the "current chord" input field with the selected chord name
+            // Uncheck all other checkboxes
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+            allCheckboxes.forEach((cb) => {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                }
+            });
+
+            // Update the "current chord" input field with the selected chord name
+            document.getElementById('current-chord').value = chordName;
+        } else {
+            document.getElementById('current-chord').value = ''; // Clear the "current chord" input field if unchecked
         }
     });
 
     outputBox.appendChild(container); // Append the container to the output box
 }
+
 
 
 

@@ -1227,7 +1227,7 @@ const noteMap = {
     'E': 4,
     'F': 5,
     'F#': 6,
-    'Gb': 6,
+    'Gb': 6,  // Added Gb as equivalent to F#
     'G': 7,
     'G#': 8,
     'Ab': 8,
@@ -1237,6 +1237,7 @@ const noteMap = {
     'B': 11
 };
 
+
 const reverseNoteMap = {
     0: 'C',
     1: 'C#',
@@ -1244,7 +1245,7 @@ const reverseNoteMap = {
     3: 'Eb',
     4: 'E',
     5: 'F',
-    6: 'Gb',
+    6: 'F#', // Use 'F#' as the default enharmonic spelling for 6
     7: 'G',
     8: 'Ab',
     9: 'A',
@@ -1252,13 +1253,20 @@ const reverseNoteMap = {
     11: 'B'
 };
 
+
 const enharmonicMap = {
     'C#': 'Db',
+    'Db': 'C#',
     'D#': 'Eb',
+    'Eb': 'D#',
     'F#': 'Gb',
+    'Gb': 'F#',
     'G#': 'Ab',
-    'A#': 'Bb'
+    'Ab': 'G#',
+    'A#': 'Bb',
+    'Bb': 'A#'
 };
+
 
 const specificSuffixes = [
     'sus4', 'sus2', 'add9', 'addb9', 'ma7', 'ma7add13', 'ma9', 'ma7#5',
@@ -1274,16 +1282,13 @@ function simplifyChord(chord) {
     const root = rootMatch[0];
     const isMinor = chord.toLowerCase().includes('mi') && !chord.toLowerCase().includes('maj');
 
-    specificSuffixes.forEach(suffix => {
-        const regex = new RegExp(suffix + '(?!\\w)', 'gi');
-        chord = chord.replace(regex, '');
-    });
-
-    chord = chord.replace(/\/[A-Ga-g][b#]?/g, '');
+    // Enhance suffix handling to preserve and match enharmonic names
+    const suffixMatch = chord.slice(root.length);
     const finalRoot = enharmonicMap[root.toUpperCase()] || root;
 
-    return isMinor ? `${finalRoot}mi` : finalRoot.trim();
+    return isMinor ? `${finalRoot}mi${suffixMatch}` : `${finalRoot}${suffixMatch}`.trim();
 }
+
 
 
 function simplifyChordSet(chordSet) {
@@ -1412,14 +1417,16 @@ function findChordMatch(complexChords, currentChord) {
         return;
     }
 
-    // Simplify the currentChord and make it lowercase for comparison
-    const simplifiedChord = simplifyChord(currentChord.trim()).toLowerCase();
+    // Simplify and normalize the currentChord for comparison
+    const simplifiedChord = simplifyChord(currentChord.trim());
+    const normalizedChord = (enharmonicMap[simplifiedChord] || simplifiedChord).toLowerCase();
 
     for (const [setName, chords] of Object.entries(complexChords)) {
         for (const entry of chords) {
-            const entryChord = entry.chord.trim().toLowerCase(); // Simplify and standardize the chord name for comparison
+            const entrySimplified = simplifyChord(entry.chord);
+            const entryChord = (enharmonicMap[entrySimplified.trim()] || entrySimplified.trim()).toLowerCase();
 
-            if (entryChord === simplifiedChord) {
+            if (entryChord === normalizedChord) {
                 // console.log(`Found in set: ${setName}, Pad: ${entry.pad}`);
                 return;
             }
@@ -1430,6 +1437,8 @@ function findChordMatch(complexChords, currentChord) {
 }
 
 
+
+
 function circleOfFifths(chordSet, currentChord) {
     if (!currentChord) {
         console.log('No chord provided.');
@@ -1437,111 +1446,41 @@ function circleOfFifths(chordSet, currentChord) {
     }
 
     const circle = [
-        {
-            major: 'C',
-            minor: 'Am',
-            enharmonicMajor: 'B#',            
-            enharmonicMinor: null
-        },
-        {
-            major: 'G',
-            minor: 'Em',
-            enharmonicMajor: null,
-            enharmonicMinor: null
-        },
-        {
-            major: 'D',
-            minor: 'Bm',
-            enharmonicMajor: null,
-            enharmonicMinor: null
-        },
-        {
-            major: 'A',
-            minor: 'F#m',
-            enharmonicMajor: null,
-            enharmonicMinor: 'G#m' 
-        },
-        {
-            major: 'E',
-            minor: 'C#m',
-            enharmonicMajor: null,
-            enharmonicMinor: 'Dbm' 
-        },
-        {
-            major: 'B',
-            minor: 'G#m',
-            enharmonicMajor: 'Cb',            
-            enharmonicMinor: 'Abm' 
-        },
-        {
-            major: 'F#',
-            minor: 'D#m',
-            enharmonicMajor: 'Gb',             
-            enharmonicMinor: 'Ebm' 
-        },
-        {
-            major: 'Db',
-            minor: 'Bbm',
-            enharmonicMajor: 'C#',             
-            enharmonicMinor: 'A#m'
-        },
-        {
-            major: 'Ab',
-            minor: 'Fm',
-            enharmonicMajor: 'G#',             
-            enharmonicMinor: null
-        },
-        {
-            major: 'Eb',
-            minor: 'Cm',
-            enharmonicMajor: 'D#',             
-            enharmonicMinor: null
-        },
-        {
-            major: 'Bb',
-            minor: 'Gm',
-            enharmonicMajor: 'A#',             
-            enharmonicMinor: null
-        },
-        {
-            major: 'F',
-            minor: 'Dm',
-            enharmonicMajor: 'E#',            
-            enharmonicMinor: null
-        }
+        { major: 'C', minor: 'Am', enharmonicMajor: 'B#', enharmonicMinor: null },
+        { major: 'G', minor: 'Em', enharmonicMajor: null, enharmonicMinor: null },
+        { major: 'D', minor: 'Bm', enharmonicMajor: null, enharmonicMinor: null },
+        { major: 'A', minor: 'F#m', enharmonicMajor: null, enharmonicMinor: 'G#m' },
+        { major: 'E', minor: 'C#m', enharmonicMajor: null, enharmonicMinor: 'Dbm' },
+        { major: 'B', minor: 'G#m', enharmonicMajor: 'Cb', enharmonicMinor: 'Abm' },
+        { major: 'F#', minor: 'D#m', enharmonicMajor: 'Gb', enharmonicMinor: 'Ebm' }, // Updated for consistency
+        { major: 'Db', minor: 'Bbm', enharmonicMajor: 'C#', enharmonicMinor: 'A#m' },
+        { major: 'Ab', minor: 'Fm', enharmonicMajor: 'G#', enharmonicMinor: null },
+        { major: 'Eb', minor: 'Cm', enharmonicMajor: 'D#', enharmonicMinor: null },
+        { major: 'Bb', minor: 'Gm', enharmonicMajor: 'A#', enharmonicMinor: null },
+        { major: 'F', minor: 'Dm', enharmonicMajor: 'E#', enharmonicMinor: null }
     ];
-    
 
-    const isMinor = currentChord.toLowerCase().includes('mi');
-    const simplifiedRoot = currentChord.includes('mi') ? currentChord.replace('mi', 'm') : currentChord;
-
-
-
+    const simplifiedRoot = currentChord.match(/^[A-Ga-g][b#]?/)[0];
     let currentKey = null;
-let chordType = '';
+    let chordType = '';
 
-// Loop through the circle to find a match
-for (let i = 0; i < circle.length; i++) {
-    // console.log(`Checking against circle key: Major - ${circle[i].major}, Minor - ${circle[i].minor}, Enharmonic Major - ${circle[i].enharmonicMajor}, Enharmonic Minor - ${circle[i].enharmonicMinor}`);
-
-    if (circle[i].major === simplifiedRoot || circle[i].enharmonicMajor === simplifiedRoot) {
-        currentKey = circle[i];
-        chordType = 'major';
-        // console.log('Found Major Match:', currentKey);
-        break;
-    } else if (circle[i].minor === simplifiedRoot || circle[i].enharmonicMinor === simplifiedRoot) {
-        currentKey = circle[i];
-        chordType = 'minor';
-        // console.log('Found Minor Match:', currentKey);
-        break;
+    // Loop through the circle to find a match
+    for (let i = 0; i < circle.length; i++) {
+        if (circle[i].major === simplifiedRoot || circle[i].enharmonicMajor === simplifiedRoot) {
+            currentKey = circle[i];
+            chordType = 'major';
+            break;
+        } else if (circle[i].minor === simplifiedRoot || circle[i].enharmonicMinor === simplifiedRoot) {
+            currentKey = circle[i];
+            chordType = 'minor';
+            break;
+        }
     }
-}
 
-if (!currentKey) {
-    console.log('Chord not found in the circle of fifths.');
-    return null;
-}
-
+    if (!currentKey) {
+        console.log('Chord not found in the circle of fifths.');
+        return null;
+    }
 
     const relativeKey = chordType === 'major' ? currentKey.minor : currentKey.major;
     const currentIndex = circle.findIndex(key => key.major === currentKey.major);
@@ -1562,6 +1501,7 @@ if (!currentKey) {
         neighboringRelativeMinorKeys
     };
 }
+
 
 function getChordComplexityRank(chord) {
     const complexityRank = [

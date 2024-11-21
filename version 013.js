@@ -1562,13 +1562,17 @@ function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighb
     const relativeKeyMatches = [];
     const neighboringKeyMatches = [];
 
+    // Normalize the keys for comparison
+    const normalizeKey = (key) => enharmonicMap[key] || key;
+
     // Find matches in Relative Key
     neighboringRelativeMinorKeys.forEach(key => {
+        const normalizedKey = normalizeKey(key);
         for (const [setName, chords] of Object.entries(complexChords)) {
             chords.forEach(entry => {
-                const chordSignature = `${entry.chord}-${entry.numeral}`;
-                if (entry.chord.includes(key) && entry.pad !== 1 && !printedChords.has(chordSignature)) {
-                    printedChords.add(chordSignature);
+                const entryChord = (enharmonicMap[entry.chord.trim()] || entry.chord.trim()).toLowerCase();
+                if (entryChord.includes(normalizedKey.toLowerCase()) && entry.pad !== 1 && !printedChords.has(entryChord)) {
+                    printedChords.add(entryChord);
                     relativeKeyMatches.push({
                         set: setName,
                         pad: entry.pad,
@@ -1582,11 +1586,12 @@ function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighb
 
     // Find matches in Neighboring Major Keys
     neighboringMajorKeys.forEach(key => {
+        const normalizedKey = normalizeKey(key);
         for (const [setName, chords] of Object.entries(complexChords)) {
             chords.forEach(entry => {
-                const chordSignature = `${entry.chord}-${entry.numeral}`;
-                if (entry.chord.includes(key) && entry.pad !== 1 && !printedChords.has(chordSignature)) {
-                    printedChords.add(chordSignature);
+                const entryChord = (enharmonicMap[entry.chord.trim()] || entry.chord.trim()).toLowerCase();
+                if (entryChord.includes(normalizedKey.toLowerCase()) && entry.pad !== 1 && !printedChords.has(entryChord)) {
+                    printedChords.add(entryChord);
                     neighboringKeyMatches.push({
                         set: setName,
                         pad: entry.pad,
@@ -1604,16 +1609,16 @@ function findNeighboringChordMatches(complexChords, neighboringMajorKeys, neighb
 
     // Print the sorted matches using createChordCheckbox for checkboxes
     appendOutput("\nRelative Key chord matches:\n");
-sortedRelativeKeyMatches.forEach(match => {
-    createChordCheckbox(match.set, match.pad, match.chord);
-});
+    sortedRelativeKeyMatches.forEach(match => {
+        createChordCheckbox(match.set, match.pad, match.chord);
+    });
 
-appendOutput("\nNeighboring chord matches:\n");
-sortedNeighboringKeyMatches.forEach(match => {
-    createChordCheckbox(match.set, match.pad, match.chord);
-});
-    
+    appendOutput("\n\nNeighboring chord matches:\n");
+    sortedNeighboringKeyMatches.forEach(match => {
+        createChordCheckbox(match.set, match.pad, match.chord);
+    });
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Select the existing submit button and output box from HTML
